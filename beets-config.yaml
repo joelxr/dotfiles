@@ -1,0 +1,35 @@
+directory: /baioneta/Músicas/Biblioteca
+library: /baioneta/Músicas/biblioteca.blb
+
+import:
+   move: no
+   copy: yes
+   write: yes
+
+plugins: embedart inline convert
+
+item_fields:
+   initial: albumartist[0].upper() + u'.'
+   disc_and_track: u'%02i.%02i' % (disc, track) if disctotal > 1 else u'%02i' % (track)
+
+paths:
+   default: $albumartist/$original_year - $album%aunique{}/$disc_and_track. $title
+   singleton: Non-Album/$artist/$title
+   comp: Compilations/$album%aunique{}/$track $title
+
+pathfields: {}
+album_fields: {}
+id3v2: yes
+threaded: yes
+
+chroma:
+   auto: no
+
+convert:
+    auto: yes
+    never_convert_lossy_files: yes
+    format: mp3
+    formats:
+        mp3:
+            command: ffmpeg -i $source -y -f mp3 -ab 320000 $dest
+            extension: mp3
